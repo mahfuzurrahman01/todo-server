@@ -22,7 +22,6 @@ async function run() {
             const query = {};
             const cursor = todoCollection.find(query);
             const result = await cursor.toArray();
-            console.log(result)
             res.send(result)
         })
         // insetting my todo list data 
@@ -30,7 +29,7 @@ async function run() {
             const body = req.body;
             const result = await todoCollection.insertOne(body)
             res.send(result)
-            console.log(result)
+
         })
         //finding one data 
         app.get('/findOne', async (req, res) => {
@@ -44,13 +43,14 @@ async function run() {
             const id = req.params.id;
             const filter = { _id: new ObjectId(id) }
             const newBody = req.body;
-            console.log(newBody)
             // this option instructs the method to create a document if no documents match the filter
             const options = { upsert: true };
             const updateGoal = {
                 $set: {
                     todo: newBody.todo,
-                    time: newBody.time
+                    time: newBody.time,
+                    date: newBody.date,
+                    complete: newBody.complete,
                 }
             }
             const result = await todoCollection.updateOne(filter, updateGoal, options)
